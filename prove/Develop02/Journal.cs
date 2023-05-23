@@ -28,20 +28,5 @@ namespace Develop02
         {
             return this.entries;
         }
-
-        public void SavetoFile()
-        {
-            using (StreamWriter outputFile = new StreamWriter(fileName))
-            {
-                outputFile.WriteLine($"{entries}");
-            }
-        }
-
-        public List<string> LoadFromFile()
-        {
-            string[] lines = System.IO.File.ReadAllLines(fileName);
-            List<string> allEntries = new List<string>(lines);
-            return allEntries;
-        }
     }
 }
