@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 
 namespace Develop03
 {
@@ -8,22 +7,21 @@ namespace Develop03
     public class Verse
     {
         private string _verse = "";
-        private List<Word> _words;
-
+        private List<string> _words = new List<string>();
         public Verse()
         {
-            _words = new List<Word>();
+            
         }
 
-        public void AddWord(Word word)
+        public void AddWord(string word)
         {
             _words.Add(word);
         }
-        public string ConvertToString()
+        public string ConvertToString(string[] words)
         {
-            foreach (Word w in _words)
+            foreach (string w in words)
             {
-                _verse += w.ConvertToString();
+                _verse += $"{w} ";
             }
             return _verse;
         }

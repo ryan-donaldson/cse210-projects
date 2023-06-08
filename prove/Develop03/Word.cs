@@ -13,7 +13,9 @@ namespace Develop03
         
         public void ChangeToBlank()
         {
+            Random rand = new Random();
             _word = "_";
         }
+        
     }
 }
