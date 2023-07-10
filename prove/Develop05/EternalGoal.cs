@@ -7,9 +7,10 @@ namespace Develop05
     public class EternalGoal : Goal
     {
 
-        public EternalGoal(string _goal)
+        public EternalGoal(string name, string goal)
         {
-            _goal = _goal += " []";
+            _name = name;
+            _goal = goal;
         }
         public override void AddPoints()
         {
@@ -17,7 +18,7 @@ namespace Develop05
         }
         public override void MarkComplete()
         {
-            _goal = _goal.Replace("[]","[X]");
+            _goal = _goal.Replace("[]", "[X]");
         }
     }
 }

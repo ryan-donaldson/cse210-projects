@@ -6,12 +6,14 @@ namespace Develop05
 
     public class ChecklistGoal : Goal
     {
-        private int _timesToComplete;
-        private int _timesCompleted = 0; 
+        protected int _timesToComplete;
+        protected int _timesCompleted = 0; 
 
-        public ChecklistGoal(string _goal, int _timesToComplete)
+        public ChecklistGoal(string name, string goal, int timesToComplete)
         {
-            _goal = _goal += $" Completed: 0/{_timesToComplete} times";
+            _name = name;
+            _goal = goal += $" Completed: 0/{timesToComplete} times";
+            _timesToComplete = timesToComplete;
         }
         public override void AddPoints()
         {
@@ -23,7 +25,7 @@ namespace Develop05
         }
         public override void MarkComplete()
         {
-            _timesCompleted += 1;
+            _timesCompleted++;
         }
     }
 }

@@ -5,9 +5,10 @@ namespace Develop05
     ///<summary>
     public class SimpleGoal : Goal
     {
-        public SimpleGoal(string _goal)
+        public SimpleGoal(string name, string goal)
         {
-            _goal = _goal += " []";
+            _name = name;
+            _goal = goal;
         }
         public override void AddPoints()
         {
@@ -15,7 +16,7 @@ namespace Develop05
         }
         public override void MarkComplete()
         {
-            _goal = _goal.Replace("[]","[X]");
+           _goal = _goal.Replace("[]", "[X]");
         }
     }
 }

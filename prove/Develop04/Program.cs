@@ -19,7 +19,7 @@ namespace Develop04
             string option = "0";
             while (option != "4")
             {
-                Console.WriteLine("Choose from the mention below what you would like to do:");
+                Console.WriteLine("Choose from the menu below what you would like to do:");
                 Console.WriteLine("1. Breathing Activity\n2. Reflection Activity\n3. Listing Activity\n4. Quit");
                 option = Console.ReadLine();
 

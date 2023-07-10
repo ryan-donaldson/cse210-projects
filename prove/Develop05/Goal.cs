@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Linq;
 namespace Develop05
 {
     ///<summary>
@@ -7,29 +10,35 @@ namespace Develop05
 
     public class Goal
     {
+        protected string _name;
         protected string _goal;
-        private List<Goal> _goals = new List<Goal>();
+        protected List<(string, string)> _goals = new List<(string, string)>();
         protected int _points = 0;
-        private string _filename;
 
         public virtual void MarkComplete()
         {}
         public virtual void AddPoints()
         {}
-        public string DisplayPoints()
+        public void SetPoints(int points)
         {
-            return $"Points: {_points}";
+            _points = points;
+        }
+        public int GetPoints()
+        {
+            return _points;
         }
         public void SaveToFile()
         {
-            string filename;
             Console.WriteLine("What is the filename?");
-            filename = Console.ReadLine();
+            string filename = Console.ReadLine();
+
             using (StreamWriter outputFile = new StreamWriter(filename))
-            foreach (Goal goal in _goals)
             {
-                string output = $"{goal}\n";
-                outputFile.WriteLine(output);
+                foreach ((string name, string goal) in _goals)
+                {
+                    string output = $"{name} - {goal}";
+                    outputFile.WriteLine(output);
+                }
             }
         }
         public void LoadFromFile()
@@ -37,37 +46,63 @@ namespace Develop05
             Console.WriteLine("What is the filename?");
             string filename = Console.ReadLine();
             string[] lines = System.IO.File.ReadAllLines(filename);
+            
+            _goals.Clear();
+
             foreach(string line in lines)
             {
-                Console.WriteLine(line);
+                string[] parts = line.Split(new string[] {" - "}, StringSplitOptions.None);
+
+                if (parts.Length == 2)
+                {
+                    string name = parts[0];
+                    string goal = parts[1];
+
+                    _goals.Add((name, goal));
+                }
             }
         }
         public void ShowGoals()
         {
-            foreach ((Goal goal, int index) in _goals.Select((g, i) => (g, i + 1)))
+            for (int i = 0; i < _goals.Count; i++)
             {
-                Console.WriteLine($"{index}. {goal}");
+                var (name, goal) = _goals[i];
+                Console.WriteLine($"{i + 1}. {name} - {goal}");
             }
-        }
-        public void SetFilename(string filename)
-        {
-            _filename = filename;
-        }
-        public string GetFilename()
-        {
-            return _filename;
         }
         public string GetGoal()
         {
             return _goal;
         }
+        public string GetName()
+        {
+            return _name;
+        }
         public void GoalListAdd(Goal goal)
         {
-            _goals.Add(goal);
+            _goals.Add((goal._name, goal._goal));
         }
-        public List<Goal> GetGoalsList()
+        public void GetGoalsList()
         {
-            return _goals;
+            foreach (var (name, goal) in _goals)
+            {
+                Console.WriteLine($"Name: {name}, Goal: {goal}");
+            }
+        }
+        public List<Goal> GetGoalObjects()
+        {
+            List<Goal> goalObjects = new List<Goal>();
+            foreach ((string name, string goal) in _goals)
+            {
+            // Create a new Goal object using the name and goal values
+            Goal goalObject = new Goal();
+            goalObject._name = name;
+            goalObject._goal = goal;
+
+            // Add the Goal object to the list
+            goalObjects.Add(goalObject);
+            }
+            return goalObjects;
         }
     }
 }

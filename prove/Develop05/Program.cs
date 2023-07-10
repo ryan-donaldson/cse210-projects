@@ -6,9 +6,9 @@ namespace Develop05
         static void Main(string[] args)
         {
             Goal goalgroup = new Goal();
-            SimpleGoal simple1 = new SimpleGoal("Run a marathon");
-            EternalGoal eternalgoal1 = new EternalGoal("Read your scriptures");
-            ChecklistGoal checklistgoal1 = new ChecklistGoal("Attend the temple", 10);
+            SimpleGoal simple1 = new SimpleGoal("simple1","Run a marathon []");
+            EternalGoal eternalgoal1 = new EternalGoal("eternalgoal1","Read your scriptures []");
+            ChecklistGoal checklistgoal1 = new ChecklistGoal("checklistgoal1","Attend the temple", 10);
             goalgroup.GoalListAdd(simple1);
             goalgroup.GoalListAdd(eternalgoal1);
             goalgroup.GoalListAdd(checklistgoal1);
@@ -18,6 +18,10 @@ namespace Develop05
                 {"eternalgoal1", eternalgoal1},
                 {"checklistgoal1", checklistgoal1}
             };
+            int simplePoints = simple1.GetPoints();
+            int eternalPoints = eternalgoal1.GetPoints();
+            int checklistPoints = checklistgoal1.GetPoints();
+            goalgroup.SetPoints((simplePoints + eternalPoints + checklistPoints));
 
             Console.WriteLine("Welcome from the Goal Program! Here you can complete goals to get points!");
             int i = -1;
@@ -34,58 +38,71 @@ namespace Develop05
                 
                 else if (i == 2)
                 {
-                    goalgroup.DisplayPoints();
+                    Console.WriteLine($"You have {goalgroup.GetPoints()} points.");
                 }
 
                 else if (i == 3)
                 {
-                    Console.WriteLine("What kind of goal would you like to create?\n 1. Simple Goal\n2. Eternal Goal\n3. Checklist Goal");
+                    Console.WriteLine("What kind of goal would you like to create?\n1. Simple Goal\n2. Eternal Goal\n3. Checklist Goal");
                     int newGoal;
                     newGoal = int.Parse(Console.ReadLine());
                     string goalName;
                     int goalTimes;
                     if (newGoal == 1)
                     {
-                        Console.WriteLine("What is the goal you want to add? ");
+                        Console.WriteLine("Enter the name of the simple goal you want to add.");
+                        string simpleName = Console.ReadLine();
+                        Console.WriteLine("What is the goal you want to add? Don't forget the empty brackets at the end.");
                         goalName = Console.ReadLine();
-                        SimpleGoal simple2 = new SimpleGoal($"{goalName}");
-                        goalgroup.GoalListAdd(simple2);
-                        goalInstances.Add("simple2", simple2);
+                        SimpleGoal newSimple = new SimpleGoal($"{simpleName}",$"{goalName}");
+                        goalgroup.GoalListAdd(newSimple);
+                        goalInstances.Add($"{simpleName}", newSimple);
                     }
                     else if (newGoal == 2)
                     {
-                        Console.WriteLine("What is the goal you want to add? ");
+                        Console.WriteLine("Enter the name of the eternal goal you want to add.");
+                        string eternalName = Console.ReadLine();
+                        Console.WriteLine("What is the goal you want to add? Don't forget the empty brackets at the end.");
                         goalName = Console.ReadLine();
-                        EternalGoal eternal2 = new EternalGoal($"{goalName}");
-                        goalgroup.GoalListAdd(eternal2);
-                        goalInstances.Add("eternal2", eternal2);
+                        EternalGoal newEternal = new EternalGoal($"{eternalName}",$"{goalName}");
+                        goalgroup.GoalListAdd(newEternal);
+                        goalInstances.Add($"{eternalName}", newEternal);
                     }
                     else if (newGoal == 3)
                     {
+                        Console.WriteLine("Enter the name of the checklist goal you want to add.");
+                        string checkName = Console.ReadLine();
                         Console.WriteLine("What is the goal you want to add? ");
                         goalName = Console.ReadLine();
                         Console.WriteLine("How many times should this goal be completed? ");
                         goalTimes = int.Parse(Console.ReadLine());
-                        ChecklistGoal check2 = new ChecklistGoal($"{goalName}", goalTimes);
-                        goalgroup.GoalListAdd(check2);
-                        goalInstances.Add("check2", check2);
+                        ChecklistGoal newCheck = new ChecklistGoal($"{checkName}",$"{goalName}", goalTimes);
+                        goalgroup.GoalListAdd(newCheck);
+                        goalInstances.Add($"{checkName}", newCheck);
                     }
                 }
                 else if (i == 4)
                 {
-                    string markGoal;
                     goalgroup.ShowGoals();
                     Console.WriteLine("Which goal would you like to mark as completed? (type the name of the goal, not the goal itself)");
-                    markGoal = Console.ReadLine();
-                    if (goalInstances.TryGetValue(markGoal, out Goal goalInstance))
-                    {
-                        goalInstance.MarkComplete();
-                        goalInstance.AddPoints();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid goal name!");
-                    }
+                    string markGoal = Console.ReadLine();
+                    
+                    List<Goal> goalList = goalgroup.GetGoalObjects();
+                    bool goalFound = false;
+                        foreach (Goal goal in goalList)
+                        {
+                            if (goal.GetName().Equals(markGoal))
+                            {
+                                goal.MarkComplete();
+                                goal.AddPoints();
+                                goalFound = true;
+                            }
+                        }
+                        if (!goalFound)
+                        {
+                            Console.WriteLine("Invalid goal name!");
+                        }
+
                 }
                 else if (i == 5)
                 {
